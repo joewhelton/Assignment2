@@ -1,6 +1,7 @@
 package com.example.assignment2;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -17,16 +18,14 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 	TabLayout tabLayout;
 	ViewPager viewPager;
+	ArrayList<Product> maltData;
+	ArrayList<Product> yeastData;
+	ArrayList<Product> hopsData;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
-		ArrayList<Product> productList = new ArrayList<>();
-		productList.add(new Product("Yeast 1", "hfhghghgh", 10.99, R.drawable.light_malt));
-		productList.add(new Product("Yeast 2", "fdsfgdf", 1.99, R.drawable.light_malt));
-		productList.add(new Product("Yeast 3", "hfhguilktuil", 12.99, R.drawable.light_malt));
 
 		tabLayout = findViewById(R.id.navTabs);
 		viewPager = findViewById(R.id.viewPager);
@@ -58,13 +57,15 @@ public class MainActivity extends AppCompatActivity {
 		});
 	}
 
-//	private void loadFragment(Fragment fragment) {
-//		// create a FragmentManager
-//		FragmentManager fm = getSupportFragmentManager();
-//		// create a FragmentTransaction to begin the transaction and replace the Fragment
-//		FragmentTransaction fragmentTransaction = fm.beginTransaction();
-//		// replace the FrameLayout with new Fragment
-//		fragmentTransaction.replace(R.id.frameLayout, fragment);
-//		fragmentTransaction.commit(); // save the changes
-//	}
+	public void addToCart(String code){
+		Toast.makeText(this, "Adding item code " + code, Toast.LENGTH_SHORT).show();
+	}
+
+	private void mockData(){
+		this.maltData = new ArrayList<>();
+		productList.add(new Product("Yeast 1", "hfhghghgh", 10.99, R.drawable.light_malt));
+		productList.add(new Product("Yeast 2", "fdsfgdf", 1.99, R.drawable.light_malt));
+		productList.add(new Product("Yeast 3", "hfhguilktuil", 12.99, R.drawable.light_malt));
+
+	}
 }

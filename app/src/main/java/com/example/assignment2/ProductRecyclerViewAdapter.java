@@ -1,7 +1,10 @@
 package com.example.assignment2;
 
 import android.content.Context;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -16,7 +19,8 @@ import java.util.ArrayList;
 public class ProductRecyclerViewAdapter extends RecyclerView.Adapter<ProductRecyclerViewAdapter.ViewHolder>{
 	private LayoutInflater mInflater;
 	private ArrayList<Product> productList;
-	private ItemClickListener mClickListener;
+	//private ItemClickListener mClickListener;
+	private int position;
 
 	public ProductRecyclerViewAdapter(Context context, ArrayList<Product> productList){
 		this.mInflater = LayoutInflater.from(context);
@@ -30,9 +34,22 @@ public class ProductRecyclerViewAdapter extends RecyclerView.Adapter<ProductRecy
 	}
 
 	@Override
+	public void onViewRecycled(ViewHolder holder) {
+		holder.itemView.setOnLongClickListener(null);
+		super.onViewRecycled(holder);
+	}
+
+	@Override
 	public void onBindViewHolder(ViewHolder holder, int	position) {
 		holder.myTextView.setText(productList.get(position).getName());
 		holder.myImage.setImageResource(productList.get(position).getImageId());
+		holder.itemView.setOnLongClickListener(new View.OnLongClickListener(){
+			@Override
+			public boolean onLongClick(View v){
+				setPosition(holder.getPosition());
+				return false;
+			}
+		});
 	}
 
 	@Override
@@ -40,27 +57,39 @@ public class ProductRecyclerViewAdapter extends RecyclerView.Adapter<ProductRecy
 		return productList.size();
 	}
 
-	public class ViewHolder extends	RecyclerView.ViewHolder implements View.OnClickListener {
+	public class ViewHolder extends	RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
 		TextView myTextView;
 		ImageView myImage;
 		ViewHolder(View itemView) {
 			super(itemView);
 			myTextView = itemView.findViewById(R.id.tvProductName);
 			myImage = itemView.findViewById(R.id.imgProduct);
-			itemView.setOnClickListener(this);
+			itemView.setOnCreateContextMenuListener(this);
 		}
 		@Override
-		public void onClick(View view) {
-			if (mClickListener != null)
-				mClickListener.onItemClick(view, getAdapterPosition());
+		public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo){
+			menu.add(Menu.NONE, R.id.addToCart, Menu.NONE, "Add To Cart");
+			menu.add(Menu.NONE, R.id.addToWishlist, Menu.NONE, "Add To Wishlist");
 		}
 	}
 
-	void setClickListener(ItemClickListener itemClickListener) {
-		this.mClickListener = itemClickListener;
+//	void setClickListener(ItemClickListener itemClickListener) {
+//		this.mClickListener = itemClickListener;
+//	}
+//
+//	public interface ItemClickListener {
+//		void onItemClick(View view, int position);
+//	}
+
+	public int getPosition() {
+		return position;
 	}
 
-	public interface ItemClickListener {
-		void onItemClick(View view, int position);
+	public void setPosition(int position) {
+		this.position = position;
+	}
+
+	public Product getProductByPosition(int position){
+		return productList.get(position);
 	}
 }
