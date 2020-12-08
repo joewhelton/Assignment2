@@ -33,7 +33,6 @@ public class FragmentAdapter extends FragmentPagerAdapter {
 			case 1:
 				FragmentYeast yeastFragment = new FragmentYeast();
 				Bundle bundle = new Bundle();
-				bundle.putArrayLis
 				bundle.putParcelableArrayList("data", (ArrayList<? extends Parcelable>) productList);
 				yeastFragment.setArguments(bundle);
 				return yeastFragment;
