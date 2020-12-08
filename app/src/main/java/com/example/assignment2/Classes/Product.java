@@ -23,7 +23,6 @@ public class Product implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		//The parcelable object has to be the first one
 		dest.writeString(this.name);
 		dest.writeString(this.code);
 		dest.writeDouble(this.price);
