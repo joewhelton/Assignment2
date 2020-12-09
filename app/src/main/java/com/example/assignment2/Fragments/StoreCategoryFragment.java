@@ -17,7 +17,8 @@ import com.example.assignment2.R;
 
 import java.util.ArrayList;
 
-public class FragmentMalt extends Fragment {
+public class StoreCategoryFragment extends Fragment {
+	int tabID;
 	View view;
 	ProductRecyclerViewAdapter adapter;
 	ArrayList<Product> productList;
@@ -27,6 +28,7 @@ public class FragmentMalt extends Fragment {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
 			productList  = getArguments().getParcelableArrayList("data");
+			tabID = getArguments().getInt("tabID");
 		}
 
 		view = inflater.inflate(R.layout.store_fragment, container, false);
@@ -49,7 +51,7 @@ public class FragmentMalt extends Fragment {
 
 		switch (item.getItemId()) {
 			case R.id.addToCart:
-				((MainActivity)getActivity()).addToCart(adapter.getProductByPosition(position));
+				((MainActivity)getActivity()).addToCart(adapter.getProductByPosition(position), tabID);
 				break;
 			case R.id.addToWishlist:
 				// do your stuff

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/sign_in"
+        android:title="Sign In" />
+    <item android:id="@+id/view_basket"
+        android:title="View Basket" />
+    <item android:id="@+id/go_home"
+        android:title="Homepage" />
+</menu>

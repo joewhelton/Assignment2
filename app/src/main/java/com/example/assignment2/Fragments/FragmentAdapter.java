@@ -32,21 +32,24 @@ public class FragmentAdapter extends FragmentPagerAdapter {
 	public Fragment getItem(int position) {
 		switch (position) {
 			case 0:
-				FragmentMalt maltFragment = new FragmentMalt();
+				StoreCategoryFragment maltFragment = new StoreCategoryFragment();
 				Bundle maltBundle = new Bundle();
 				maltBundle.putParcelableArrayList("data", (ArrayList<? extends Parcelable>) maltData);
+				maltBundle.putInt("tabID", 0);
 				maltFragment.setArguments(maltBundle);
 				return maltFragment;
 			case 1:
-				FragmentYeast yeastFragment = new FragmentYeast();
+				StoreCategoryFragment yeastFragment = new StoreCategoryFragment();
 				Bundle yeastBundle = new Bundle();
 				yeastBundle.putParcelableArrayList("data", (ArrayList<? extends Parcelable>) yeastData);
+				yeastBundle.putInt("tabID", 1);
 				yeastFragment.setArguments(yeastBundle);
 				return yeastFragment;
 			case 2:
-				FragmentHops hopsFragment = new FragmentHops();
+				StoreCategoryFragment hopsFragment = new StoreCategoryFragment();
 				Bundle hopsBundle = new Bundle();
 				hopsBundle.putParcelableArrayList("data", (ArrayList<? extends Parcelable>) hopsData);
+				hopsBundle.putInt("tabID", 2);
 				hopsFragment.setArguments(hopsBundle);
 				return hopsFragment;
 			default:

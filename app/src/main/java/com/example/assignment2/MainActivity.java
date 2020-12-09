@@ -1,15 +1,16 @@
 package com.example.assignment2;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.assignment2.Classes.Product;
+import com.example.assignment2.Database.DbHandler;
 import com.example.assignment2.Fragments.FragmentAdapter;
 import com.google.android.material.tabs.TabLayout;
 
@@ -65,8 +66,36 @@ public class MainActivity extends AppCompatActivity {
 		});
 	}
 
-	public void addToCart(Product product){
-		Toast.makeText(this, "Adding item code " + product.getCode(), Toast.LENGTH_SHORT).show();
+	public void addToCart(Product product, int tabID){
+		if(tabID == viewPager.getCurrentItem()) {
+			DbHandler dbHandler = new DbHandler(MainActivity.this);
+			long rowId = dbHandler.insertProductDetails(product.getName(), product.getCode(), product.getPrice());
+			Toast.makeText(this, "Added item code " + product.getName(), Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.main_menu, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.sign_in:
+
+				return true;
+			case R.id.view_basket:
+				Intent basket = new Intent(MainActivity.this, BasketActivity.class);
+				startActivity(basket);
+				return true;
+			case R.id.go_home:
+
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
 	}
 
 	private void mockData(){
