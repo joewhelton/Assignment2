@@ -5,7 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.TextUtils;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -98,6 +100,22 @@ public class DbHandler extends SQLiteOpenHelper {
 			item.put(KEY_PRODUCTPRICE,cursor.getString(cursor.getColumnIndex(KEY_PRODUCTPRICE)));
 			basketList.add(item);
 		}
+		db.close();
 		return basketList;
+	}
+
+//	public void emptyBasket(ArrayList<String> ids){
+//		SQLiteDatabase db = this.getWritableDatabase();
+//		ids.forEach((id) -> {
+//			db.delete(TABLE_Basket, KEY_ID=" = ?", new)
+//		});
+//		db.close();
+//	}
+
+	public void emptyBasket(String[] itemIds){
+		SQLiteDatabase db = this.getWritableDatabase();
+		String arguments = TextUtils.join(", ", itemIds);
+		db.execSQL(String.format("DELETE FROM %s WHERE %s IN (%s);", TABLE_Basket, KEY_ID, arguments));
+		db.close();
 	}
 }
