@@ -57,6 +57,7 @@ public class DbHandler extends SQLiteOpenHelper {
 		onCreate(db);
 	}
 
+	//Create User Details
 	public long insertUserDetails(String username, String password, String address){
 		//Get the Data Repository in write mode
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -69,6 +70,61 @@ public class DbHandler extends SQLiteOpenHelper {
 		long newRowId = db.insert(TABLE_Users,null, cValues);
 		db.close();
 		return newRowId;
+	}
+
+	// Retrieve All User Details
+	public ArrayList<HashMap<String, String>> getAllUsers(){
+		SQLiteDatabase db = this.getWritableDatabase();
+		ArrayList<HashMap<String, String>> userList = new ArrayList<>();
+		String query = String.format("SELECT %s, %s, %s, %s FROM %s", KEY_ID, KEY_USERNAME, KEY_PASSWORD, KEY_ADDRESS, TABLE_Users);
+		Cursor cursor = db.rawQuery(query,null);
+		while (cursor.moveToNext()){
+			HashMap<String,String> user = new HashMap<>();
+			user.put(KEY_ID,cursor.getString(cursor.getColumnIndex(KEY_ID)));
+			user.put(KEY_USERNAME,cursor.getString(cursor.getColumnIndex(KEY_USERNAME)));
+			user.put(KEY_PASSWORD,cursor.getString(cursor.getColumnIndex(KEY_PASSWORD)));
+			user.put(KEY_ADDRESS,cursor.getString(cursor.getColumnIndex(KEY_ADDRESS)));
+			userList.add(user);
+		}
+		cursor.close();
+		db.close();
+		return userList;
+	}
+
+	//Retrieve User by Username
+	public HashMap<String, String> getUserByUsername(String username){
+		HashMap<String,String> user = new HashMap<>();
+		SQLiteDatabase db = this.getWritableDatabase();
+		String query = String.format("SELECT %s, %s, %s, %s FROM %s WHERE %s LIKE \"%s\"", KEY_ID, KEY_USERNAME, KEY_PASSWORD, KEY_ADDRESS, TABLE_Users, KEY_USERNAME, username);
+		Cursor cursor = db.rawQuery(query,null);
+		while (cursor.moveToNext()){
+			user.put(KEY_ID,cursor.getString(cursor.getColumnIndex(KEY_ID)));
+			user.put(KEY_USERNAME,cursor.getString(cursor.getColumnIndex(KEY_USERNAME)));
+			user.put(KEY_PASSWORD,cursor.getString(cursor.getColumnIndex(KEY_PASSWORD)));
+			user.put(KEY_ADDRESS,cursor.getString(cursor.getColumnIndex(KEY_ADDRESS)));
+		}
+		cursor.close();
+		db.close();
+		return user;
+	}
+
+	// Update User Details
+	public int updateUserDetails(String username, String password, String address, long id){
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues cValues = new ContentValues();
+		cValues.put(KEY_USERNAME, username);
+		cValues.put(KEY_PASSWORD, password);
+		cValues.put(KEY_ADDRESS, address);
+		int count = db.update(TABLE_Users, cValues, KEY_ID+" = ?",new String[]
+				{String.valueOf(id)});
+		return count;
+	}
+
+	// Delete User Details
+	public void deleteUser(long id){
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(TABLE_Users, KEY_ID+" = ?",new String[]{String.valueOf(id)});
+		db.close();
 	}
 
 	public long insertProductDetails(String productName, String productCode, double productPrice){
@@ -89,7 +145,7 @@ public class DbHandler extends SQLiteOpenHelper {
 	public ArrayList<HashMap<String, String>> getBasketList(){
 		SQLiteDatabase db = this.getWritableDatabase();
 		ArrayList<HashMap<String, String>> basketList = new ArrayList<>();
-		String query = "SELECT " + KEY_ID + ", " + KEY_PRODUCTNAME + ", " + KEY_PRODUCTCODE + ", " + KEY_PRODUCTCOUNT + ", " + KEY_PRODUCTPRICE + " FROM "+ TABLE_Basket;
+		String query = String.format("SELECT %s, %s, %s, %s, %s FROM %s", KEY_ID, KEY_PRODUCTNAME, KEY_PRODUCTCODE, KEY_PRODUCTCOUNT, KEY_PRODUCTPRICE, TABLE_Basket);
 		Cursor cursor = db.rawQuery(query,null);
 		while (cursor.moveToNext()){
 			HashMap<String,String> item = new HashMap<>();
@@ -100,17 +156,10 @@ public class DbHandler extends SQLiteOpenHelper {
 			item.put(KEY_PRODUCTPRICE,cursor.getString(cursor.getColumnIndex(KEY_PRODUCTPRICE)));
 			basketList.add(item);
 		}
+		cursor.close();
 		db.close();
 		return basketList;
 	}
-
-//	public void emptyBasket(ArrayList<String> ids){
-//		SQLiteDatabase db = this.getWritableDatabase();
-//		ids.forEach((id) -> {
-//			db.delete(TABLE_Basket, KEY_ID=" = ?", new)
-//		});
-//		db.close();
-//	}
 
 	public void emptyBasket(String[] itemIds){
 		SQLiteDatabase db = this.getWritableDatabase();

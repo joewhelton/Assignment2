@@ -22,7 +22,7 @@ public class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecycl
 
 	@Override
 	public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view =	mInflater.inflate(R.layout.rv_products_row, parent, false);
+		View view =	mInflater.inflate(R.layout.rv_basket_row, parent, false);
 		return new ViewHolder(view);
 	}
 

@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.assignment2.Classes.Product;
+import com.example.assignment2.Classes.User;
 import com.example.assignment2.Database.DbHandler;
 import com.example.assignment2.Fragments.FragmentAdapter;
 import com.google.android.material.tabs.TabLayout;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 	ArrayList<Product> maltData;
 	ArrayList<Product> yeastData;
 	ArrayList<Product> hopsData;
+	User signedInUser;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +68,12 @@ public class MainActivity extends AppCompatActivity {
 		});
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		Toast.makeText(this, "Resumed Main", Toast.LENGTH_SHORT).show();
+	}
+
 	public void addToCart(Product product, int tabID){
 		if(tabID == viewPager.getCurrentItem()) {
 			DbHandler dbHandler = new DbHandler(MainActivity.this);
@@ -84,7 +92,8 @@ public class MainActivity extends AppCompatActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.sign_in:
-
+				Intent signIn = new Intent(MainActivity.this, LoginActivity.class);
+				startActivity(signIn);
 				return true;
 			case R.id.view_basket:
 				Intent basket = new Intent(MainActivity.this, BasketActivity.class);
@@ -96,6 +105,14 @@ public class MainActivity extends AppCompatActivity {
 			default:
 				return super.onOptionsItemSelected(item);
 		}
+	}
+
+	public User getSignedInUser() {
+		return signedInUser;
+	}
+
+	public void setSignedInUser(User signedInUser) {
+		this.signedInUser = signedInUser;
 	}
 
 	private void mockData(){
@@ -118,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
 		hopsData.add(new Product("Citra Leaf Hops", "hbs30016", 5.50, R.drawable.hop_leaf));
 		hopsData.add(new Product("Styrian Goldings Pellets", "hbs30049", 5.85, R.drawable.hop_pellets));
 		hopsData.add(new Product("Czech Saaz leaf hops", "hbs30056", 6.75, R.drawable.hop_leaf));
-		hopsData.add(new Product("Pacifica (New Zealand) Finishing Hops", "hbs30052", 5.90, R.drawable.hop_pellets));
+		hopsData.add(new Product("Pacifica Finishing Hops", "hbs30052", 5.90, R.drawable.hop_pellets));
 
 	}
 }

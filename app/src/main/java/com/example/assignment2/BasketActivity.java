@@ -40,6 +40,15 @@ public class BasketActivity extends AppCompatActivity {
 				emptyBasket();
 			}
 		});
+
+		Button btnContinueShopping = findViewById(R.id.continueShopping);
+		btnContinueShopping.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent home = new Intent(BasketActivity.this, MainActivity.class);
+				startActivity(home);
+			}
+		});
 	}
 
 	private void updateBasket(){

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -14,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.assignment2.Classes.Product;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class ProductRecyclerViewAdapter extends RecyclerView.Adapter<ProductRecyclerViewAdapter.ViewHolder>{
@@ -41,8 +41,11 @@ public class ProductRecyclerViewAdapter extends RecyclerView.Adapter<ProductRecy
 
 	@Override
 	public void onBindViewHolder(ViewHolder holder, int	position) {
-		holder.myTextView.setText(productList.get(position).getName());
-		holder.myImage.setImageResource(productList.get(position).getImageId());
+		holder.productName.setText(productList.get(position).getName());
+		holder.productCode.setText(String.format("Code: %s", productList.get(position).getCode()));
+		DecimalFormat df = new DecimalFormat("###.##");
+		holder.productPrice.setText(String.format("€%s", df.format(productList.get(position).getPrice())));
+		holder.productImage.setImageResource(productList.get(position).getImageId());
 		holder.itemView.setOnLongClickListener(new View.OnLongClickListener(){
 			@Override
 			public boolean onLongClick(View v){
@@ -58,12 +61,16 @@ public class ProductRecyclerViewAdapter extends RecyclerView.Adapter<ProductRecy
 	}
 
 	public class ViewHolder extends	RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
-		TextView myTextView;
-		ImageView myImage;
+		TextView productName;
+		TextView productCode;
+		TextView productPrice;
+		ImageView productImage;
 		ViewHolder(View itemView) {
 			super(itemView);
-			myTextView = itemView.findViewById(R.id.tvProductName);
-			myImage = itemView.findViewById(R.id.imgProduct);
+			productName = itemView.findViewById(R.id.tvProductName);
+			productCode = itemView.findViewById(R.id.tvProductCode);
+			productPrice = itemView.findViewById(R.id.tvProductPrice);
+			productImage = itemView.findViewById(R.id.imgProduct);
 			itemView.setOnCreateContextMenuListener(this);
 		}
 		@Override
@@ -72,14 +79,6 @@ public class ProductRecyclerViewAdapter extends RecyclerView.Adapter<ProductRecy
 			menu.add(Menu.NONE, R.id.addToWishlist, Menu.NONE, "Add To Wishlist");
 		}
 	}
-
-//	void setClickListener(ItemClickListener itemClickListener) {
-//		this.mClickListener = itemClickListener;
-//	}
-//
-//	public interface ItemClickListener {
-//		void onItemClick(View view, int position);
-//	}
 
 	public int getPosition() {
 		return position;
