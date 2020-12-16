@@ -43,8 +43,7 @@ public class ProductRecyclerViewAdapter extends RecyclerView.Adapter<ProductRecy
 	public void onBindViewHolder(ViewHolder holder, int	position) {
 		holder.productName.setText(productList.get(position).getName());
 		holder.productCode.setText(String.format("Code: %s", productList.get(position).getCode()));
-		DecimalFormat df = new DecimalFormat("###.##");
-		holder.productPrice.setText(String.format("€%s", df.format(productList.get(position).getPrice())));
+		holder.productPrice.setText(String.format("€%.2f", productList.get(position).getPrice()));
 		holder.productImage.setImageResource(productList.get(position).getImageId());
 		holder.itemView.setOnLongClickListener(new View.OnLongClickListener(){
 			@Override

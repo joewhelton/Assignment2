@@ -167,4 +167,17 @@ public class DbHandler extends SQLiteOpenHelper {
 		db.execSQL(String.format("DELETE FROM %s WHERE %s IN (%s);", TABLE_Basket, KEY_ID, arguments));
 		db.close();
 	}
+
+	public void clearAllBasketItems(){	//Should have thought of doing this before writing that last method...
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.execSQL(String.format("DELETE FROM %s", TABLE_Basket));
+		db.close();
+	}
+
+	//Delete product from basket by ID
+	public void deleteBasketItem(long id){
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(TABLE_Basket, KEY_ID+" = ?",new String[]{String.valueOf(id)});
+		db.close();
+	}
 }

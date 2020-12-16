@@ -1,7 +1,9 @@
 package com.example.assignment2;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -24,11 +26,17 @@ public class MainActivity extends AppCompatActivity {
 	ArrayList<Product> yeastData;
 	ArrayList<Product> hopsData;
 	User signedInUser;
+	SharedPreferences spref;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		spref = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences.Editor editor = spref.edit();
+		editor.clear();
+		editor.apply();
 
 		tabLayout = findViewById(R.id.navTabs);
 		viewPager = findViewById(R.id.viewPager);
@@ -71,7 +79,12 @@ public class MainActivity extends AppCompatActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		Toast.makeText(this, "Resumed Main", Toast.LENGTH_SHORT).show();
+		if(spref.contains("username")){
+			long id = spref.getLong("id", 0);
+			String username = spref.getString("username", null);
+			String address = spref.getString("address", null);
+			setSignedInUser(new User(id, username, address));
+		}
 	}
 
 	public void addToCart(Product product, int tabID){
@@ -113,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
 	public void setSignedInUser(User signedInUser) {
 		this.signedInUser = signedInUser;
+		setTitle("Signed in as " + signedInUser.getUsername());
 	}
 
 	private void mockData(){
@@ -125,17 +139,17 @@ public class MainActivity extends AppCompatActivity {
 
 		this.yeastData = new ArrayList<>();
 		yeastData.add(new Product("M84 Lager Yeast", "hbs20015", 4.50, R.drawable.lager_yeast));
-		yeastData.add(new Product("English Ale Yeast", "hbs20017", 4.00, R.drawable.lager_yeast));
-		yeastData.add(new Product("Sour Lallemand Yeast", "hbs20019", 4.20, R.drawable.lager_yeast));
-		yeastData.add(new Product("Saison Yeast", "hbs20026", 3.99, R.drawable.lager_yeast));
-		yeastData.add(new Product("Munich Lager Yeast", "hbs20052", 4.70, R.drawable.lager_yeast));
+		yeastData.add(new Product("English Ale Yeast", "hbs20017", 4.00, R.drawable.english_ale_yeast));
+		yeastData.add(new Product("Sour Lallemand Yeast", "hbs20019", 4.20, R.drawable.sour_yeast));
+		yeastData.add(new Product("Saison Yeast", "hbs20026", 3.99, R.drawable.saison_yeast));
+		yeastData.add(new Product("Munich Lager Yeast", "hbs20052", 4.70, R.drawable.munich_yeast));
 
 		this.hopsData = new ArrayList<>();
 		hopsData.add(new Product("Target T90 Hop Pellets", "hbs30007", 6.99, R.drawable.hop_pellets));
 		hopsData.add(new Product("Citra Leaf Hops", "hbs30016", 5.50, R.drawable.hop_leaf));
-		hopsData.add(new Product("Styrian Goldings Pellets", "hbs30049", 5.85, R.drawable.hop_pellets));
+		hopsData.add(new Product("Styrian Goldings Pellets", "hbs30049", 5.85, R.drawable.hop_pellets_close));
 		hopsData.add(new Product("Czech Saaz leaf hops", "hbs30056", 6.75, R.drawable.hop_leaf));
-		hopsData.add(new Product("Pacifica Finishing Hops", "hbs30052", 5.90, R.drawable.hop_pellets));
+		hopsData.add(new Product("Pacifica Finishing Hops", "hbs30052", 5.90, R.drawable.hop_bag));
 
 	}
 }

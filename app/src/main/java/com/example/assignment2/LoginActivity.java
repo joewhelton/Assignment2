@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
 			Intent main = new Intent(LoginActivity.this, MainActivity.class);
 			SharedPreferences spref = PreferenceManager.getDefaultSharedPreferences(this);
 			SharedPreferences.Editor editor = spref.edit();
-			editor.putString("id", user.get("id"));
+			editor.putLong("id", Long.parseLong(user.get("id")));
 			editor.putString("username", user.get("username"));
 			editor.putString("address", user.get("address"));
 			editor.apply();
