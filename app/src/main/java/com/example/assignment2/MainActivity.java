@@ -26,17 +26,11 @@ public class MainActivity extends AppCompatActivity {
 	ArrayList<Product> yeastData;
 	ArrayList<Product> hopsData;
 	User signedInUser;
-	SharedPreferences spref;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
-		spref = PreferenceManager.getDefaultSharedPreferences(this);
-		SharedPreferences.Editor editor = spref.edit();
-		editor.clear();
-		editor.apply();
 
 		tabLayout = findViewById(R.id.navTabs);
 		viewPager = findViewById(R.id.viewPager);
@@ -79,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		SharedPreferences spref = PreferenceManager.getDefaultSharedPreferences(this);
 		if(spref.contains("username")){
 			long id = spref.getLong("id", 0);
 			String username = spref.getString("username", null);

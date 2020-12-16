@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.constraintlayout.motion.widget.MotionController;
+import androidx.constraintlayout.motion.widget.MotionLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.assignment2.Classes.Product;
@@ -45,6 +47,17 @@ public class ProductRecyclerViewAdapter extends RecyclerView.Adapter<ProductRecy
 		holder.productCode.setText(String.format("Code: %s", productList.get(position).getCode()));
 		holder.productPrice.setText(String.format("€%.2f", productList.get(position).getPrice()));
 		holder.productImage.setImageResource(productList.get(position).getImageId());
+		holder.productImage.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				if(holder.isZoomed) {
+					holder.motionLayout.transitionToStart();
+				} else {
+					holder.motionLayout.transitionToEnd();
+				}
+				holder.isZoomed = !holder.isZoomed;
+			}
+		});
 		holder.itemView.setOnLongClickListener(new View.OnLongClickListener(){
 			@Override
 			public boolean onLongClick(View v){
@@ -60,16 +73,20 @@ public class ProductRecyclerViewAdapter extends RecyclerView.Adapter<ProductRecy
 	}
 
 	public class ViewHolder extends	RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
+		boolean isZoomed;
 		TextView productName;
 		TextView productCode;
 		TextView productPrice;
 		ImageView productImage;
+		MotionLayout motionLayout;
 		ViewHolder(View itemView) {
 			super(itemView);
+			isZoomed = false;
 			productName = itemView.findViewById(R.id.tvProductName);
 			productCode = itemView.findViewById(R.id.tvProductCode);
 			productPrice = itemView.findViewById(R.id.tvProductPrice);
 			productImage = itemView.findViewById(R.id.imgProduct);
+			motionLayout = itemView.findViewById(R.id.motionLayout);
 			itemView.setOnCreateContextMenuListener(this);
 		}
 		@Override

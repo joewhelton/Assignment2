@@ -45,13 +45,15 @@ public class LoginActivity extends AppCompatActivity {
 		});
 	}
 
-	private void signIn(){
+	private boolean signIn(){
 		DbHandler dbHandler = new DbHandler(LoginActivity.this);
 		HashMap<String,String> user = dbHandler.getUserByUsername(usernameEditText.getText().toString());
 		if(user.size() == 0){
 			Toast.makeText(this, "No user found", Toast.LENGTH_SHORT).show();
-		} else if(passwordEditText.getText().toString().equals(user.get("password"))) {
+			return false;
+		} else if(!passwordEditText.getText().toString().equals(user.get("password"))) {
 			Toast.makeText(this, "Incorrect password", Toast.LENGTH_SHORT).show();
+			return false;
 		} else {
 			Toast.makeText(this, "Signed In Successfully", Toast.LENGTH_SHORT).show();
 			Intent main = new Intent(LoginActivity.this, MainActivity.class);
@@ -63,5 +65,6 @@ public class LoginActivity extends AppCompatActivity {
 			editor.apply();
 			startActivity(main);
 		}
+		return true;
 	}
 }

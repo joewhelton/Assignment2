@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:ems="10"
-            android:inputType="textPassword" />
+            android:inputType="textPersonName" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="fill_parent"
